@@ -19,10 +19,14 @@ jobs:
           submodules: 'true'
       - name: dependencies
         run: |
+          echo "podman version"
+          podman --version
           sudo apt-get update
           sudo apt-get install -y python3.10 python3-pip podman
+          echo "podman version"
+          podman --version
           echo "running containers"
-          ./tests/testatrice/testatrice.sh --sleep 60 > /dev/null
+          ./tests/testatrice/testatrice.sh --sleep 60
           pip install .
           pip install .[test]
       - name: tests
