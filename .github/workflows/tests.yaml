@@ -15,12 +15,20 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v5
+        with:
+          submodules: 'true'
       - name: dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y python3.10 python3-pip podman
-          git submodule update
           echo "running containers"
+          echo ""
+          ls -alF
+          echo ""
+          ls ./tests -alF
+          echo ""
+          ls ./tests/testatrice -alF
+          echo ""
           ./tests/testatrice/testatrice.sh --sleep 60 > /dev/null
           pip install .
           pip install .[test]
