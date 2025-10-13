@@ -1,3 +1,11 @@
+"""Automatically generated protobuf library
+
+This library is automatically generated from cockatrice source code at:
+https://github.com/Cockatrice/Cockatrice
+
+Using protoc:
+libprotoc 3.21.0
+"""
 __all__ = [
     'admin_commands_pb2',
     'card_attributes_pb2',
@@ -31,8 +39,10 @@ __all__ = [
     'command_ready_start_pb2',
     'command_replay_delete_match_pb2',
     'command_replay_download_pb2',
+    'command_replay_get_code_pb2',
     'command_replay_list_pb2',
     'command_replay_modify_match_pb2',
+    'command_replay_submit_code_pb2',
     'command_reveal_cards_pb2',
     'command_reverse_turn_pb2',
     'command_roll_die_pb2',
@@ -43,8 +53,8 @@ __all__ = [
     'command_set_sideboard_lock_pb2',
     'command_set_sideboard_plan_pb2',
     'command_shuffle_pb2',
-    'commands_pb2',
     'command_undo_draw_pb2',
+    'commands_pb2',
     'context_concede_pb2',
     'context_connection_state_changed_pb2',
     'context_deck_select_pb2',
@@ -128,16 +138,18 @@ __all__ = [
     'response_pb2',
     'response_register_pb2',
     'response_replay_download_pb2',
+    'response_replay_get_code_pb2',
     'response_replay_list_pb2',
     'response_viewlog_history_pb2',
     'response_warn_history_pb2',
     'response_warn_list_pb2',
     'room_commands_pb2',
     'room_event_pb2',
+    'server_message_pb2',
     'serverinfo_arrow_pb2',
     'serverinfo_ban_pb2',
-    'serverinfo_cardcounter_pb2',
     'serverinfo_card_pb2',
+    'serverinfo_cardcounter_pb2',
     'serverinfo_chat_message_pb2',
     'serverinfo_counter_pb2',
     'serverinfo_deckstorage_pb2',
@@ -152,7 +164,6 @@ __all__ = [
     'serverinfo_user_pb2',
     'serverinfo_warning_pb2',
     'serverinfo_zone_pb2',
-    'server_message_pb2',
     'session_commands_pb2',
     'session_event_pb2'
 ]

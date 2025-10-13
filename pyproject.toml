@@ -18,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
-  "protobuf>=5.29",
+  "protobuf>=4.21",
   "websockets>=14",
 ]
 
