@@ -103,25 +103,20 @@ class crow:
             kwargs["real_name"] = real_name
 
         try:
-            msg_bytes, msg_id = registration_client.build(
+            result = await crow.send_command_static(
                 protocol.session_commands.register,
+                registration_client,
+                registration_connection,
+                registration_handler,
                 user_name=username,
                 clientid=f"crow_{username}",
                 password=password,
                 **kwargs,
             )
-            await registration_connection.send(msg_bytes)
-            resp = await registration_handler.get_response(msg_id)
         finally:
             registration_connection.close()
 
-        match resp.response_code:
-            case protocol.Response.RespRegistrationAccepted:
-                return True
-            case protocol.Response.RespRegistrationAcceptedNeedsActivation:
-                return False
-            case _:
-                raise ServerError(resp)
+        return result
 
     async def login(self):
         """Log in to the server.
@@ -156,32 +151,35 @@ class crow:
 
         self._ping_task = asyncio.create_task(self._ping_loop())
 
-    async def send_command(self, command, *args, **kwargs):
-        """Send a command to the server.
-
-        Args:
-            command: Protocol command to send.
-            other args are used to construct the command.
-
-        Returns:
-            The response from the server.
-
-        Raises:
-            ServerError: When the server sends an error response.
-        """
-        msg_bytes, msg_id = self._client.build(command, *args, **kwargs)
-        await self._connection.send(msg_bytes)
-        resp = await self._handler.get_response(msg_id)
+    @staticmethod
+    async def send_command_static(
+        command, local_client, local_connection, local_handler, *args, **kwargs
+    ):
+        msg_bytes, msg_id = local_client.build(command, *args, **kwargs)
+        await local_connection.send(msg_bytes)
+        resp = await local_handler.get_response(msg_id)
         # TODO: Cleanup this match statement
         match resp.response_code:
             case protocol.Response.RespOk:
                 pass
+            case protocol.Response.RespRegistrationAccepted:
+                return True
             case protocol.Response.RespRegistrationAcceptedNeedsActivation:
-                pass
+                return False
             case _:
                 raise ServerError(resp)
 
         return resp
+
+    async def send_command(self, command, *args, **kwargs):
+        return crow.send_command_static(
+            command,
+            self._client,
+            self._connection,
+            self._handler,
+            args,
+            kwargs,
+        )
 
     async def _ping_loop(self):
         while self._connection.is_connected:
